@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Krypt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+CiAgPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSIjMWExYTJlIiByeD0iOCIvPgogIDxwYXRoIGQ9Ik0xMiAyMEwyMCAyOEwxMiAzNk0yNCAzNkg0MCIgc3Ryb2tlPSIjMDBmZjg4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="password-overlay">
+        <div class="wavy-band"></div>
+        <div class="bottom-wave"></div>
+        
+        <div class="typing-container">
+            <span class="typing-text"></span>
+        </div>
+        
+        <div class="password-container">
+            <div class="password-logo">
+                <i class="fas fa-terminal"></i>
+            </div>
+            <h2 class="password-title">KRYPT ACCESS</h2>
+            <div class="password-input-container">
+                <input type="password" 
+                       id="password-field"
+                       class="password-input" 
+                       placeholder="Enter Password"
+                       autocomplete="new-password">
+                <i class="fas fa-eye-slash toggle-password" id="togglePassword"></i>
+                <i class="fas fa-times clear-password" id="clearPassword"></i>
+            </div>
+            <button class="password-button" onclick="checkPassword()">ACCESS</button>
+            <div class="password-error">Access Denied. Invalid Security Key.</div>
+        </div>
+        
+        <div class="success-message">
+            Access Granted! Redirecting to Profile...
+        </div>
+        
+        <div class="credit-text">
+            Made<br>by ♥<br>Kcyb3r_
+        </div>
+    </div>
+    <div id="skeleton-loader" style="display: none;">
+        <div class="skeleton-header">
+            <div class="skeleton-profile-pic shimmer"></div>
+            <div class="skeleton-info">
+                <div class="skeleton-name shimmer"></div>
+                <div class="skeleton-stats">
+                    <div class="skeleton-stat shimmer"></div>
+                    <div class="skeleton-stat shimmer"></div>
+                    <div class="skeleton-stat shimmer"></div>
+                </div>
+                <div class="skeleton-bio">
+                    <div class="skeleton-line shimmer"></div>
+                    <div class="skeleton-line shimmer"></div>
+                    <div class="skeleton-line shimmer"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skeleton-tabs shimmer"></div>
+        <div class="skeleton-grid">
+            <div class="skeleton-post shimmer"></div>
+            <div class="skeleton-post shimmer"></div>
+            <div class="skeleton-post shimmer"></div>
+            <div class="skeleton-post shimmer"></div>
+            <div class="skeleton-post shimmer"></div>
+            <div class="skeleton-post shimmer"></div>
+        </div>
+    </div>
+    <div class="brand-name">
+        <div class="brand-logo">
+            <i class="fas fa-terminal"></i>
+        </div>
+        <div class="text-container">
+            <span class="brand-text">KRYPT</span>
+        </div>
+    </div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="https://i.pinimg.com/736x/6b/95/6a/6b956ab87774217ae5f402fb2f633b60.jpg" class="profile-picture" alt="Kez.ai">
+            <div class="profile-info">
+                <div class="profile-name">
+                    <h1>Kez.ai</h1>
+                    <p class="bio">Charismatic Hacker & Coding Enthusiast</p>
+                </div>
+                    <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">74</span>
+                        <span class="stat-label">Posts</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">10.3M</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">50</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                    </div>
+                    <div class="bio-details">
+                        <p>🔒 Cybersecurity Researcher & Ethical Hacker</p>
+                        <p>💻 Specializing in Penetration Testing & Network Security</p>
+                        <p>🛡️ Bug Bounty Hunter | CTF Player</p>
+                        <p>📚 Security Awareness Educator</p>
+                        <p>⚡ CEH | OSCP | CISSP Certified</p>
+                    </div>
+                </div>
+            </div>
+        <div class="profile-tabs">
+            <a class="tab-item active" data-tab="posts">
+                <i class="fas fa-th"></i> Posts
+            </a>
+            <a class="tab-item" data-tab="reels">
+                <i class="fas fa-film"></i> Reels
+            </a>
+            <a class="tab-item" data-tab="tagged">
+                <i class="fas fa-user-tag"></i> Tagged
+            </a>
+        </div>
+
+        <div class="content-sections">
+            <!-- Posts Grid -->
+        <div class="content-section active" id="posts">
+            <div class="posts-grid">
+                    <div class="post-item">
+                        <img src="https://i.pinimg.com/564x/73/31/d0/7331d005a9a591f35c3470c4a4d7884f.jpg" alt="Cybersecurity">
+                        <div class="post-overlay">
+                            <div class="post-stats">
+                                <div class="stat"><i class="fas fa-heart"></i> 2.5k</div>
+                                <div class="stat"><i class="fas fa-comment"></i> 128</div>
+                </div>
+                </div>
+                </div>
+                    <div class="post-item">
+                        <img src="https://i.pinimg.com/564x/dd/09/63/dd0963c413419d1ee23621267d661c87.jpg" alt="Hacking">
+                        <div class="post-overlay">
+                            <div class="post-stats">
+                                <div class="stat"><i class="fas fa-heart"></i> 3.1k</div>
+                                <div class="stat"><i class="fas fa-comment"></i> 245</div>
+                </div>
+                </div>
+                </div>
+                    <div class="post-item">
+                        <img src="https://i.pinimg.com/564x/e7/0f/f7/e70ff7c814a928ddc52370895d9b411e.jpg" alt="Network Security">
+                        <div class="post-overlay">
+                            <div class="post-stats">
+                                <div class="stat"><i class="fas fa-heart"></i> 1.8k</div>
+                                <div class="stat"><i class="fas fa-comment"></i> 156</div>
+                </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Reels Grid -->
+        <div class="content-section" id="reels">
+            <div class="reels-grid">
+                <div class="reel-item">
+                        <img src="https://i.pinimg.com/564x/1b/dc/a8/1bdca86bb5bd29684a9a6fc3554de4b3.jpg" alt="Ethical Hacking Tutorial">
+                        <div class="reel-overlay">
+                            <div class="reel-stats">
+                                <div class="stat"><i class="fas fa-play"></i> 15.2k</div>
+                        </div>
+                    </div>
+                        <i class="fas fa-film reel-icon"></i>
+                </div>
+                <div class="reel-item">
+                        <img src="https://i.pinimg.com/564x/f5/29/b1/f529b13c7cbf0daf819972fcf9947ca0.jpg" alt="CTF Walkthrough">
+                        <div class="reel-overlay">
+                            <div class="reel-stats">
+                                <div class="stat"><i class="fas fa-play"></i> 12.8k</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-film reel-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Tagged Posts -->
+        <div class="content-section" id="tagged">
+            <div class="tagged-grid">
+                <div class="post-item">
+                        <img src="https://i.pinimg.com/564x/80/3e/43/803e43dc74036726f7d9d32ccc592043.jpg" alt="Security Conference">
+                    <div class="post-overlay">
+                        <div class="post-stats">
+                                <div class="stat"><i class="fas fa-heart"></i> 1.4k</div>
+                                <div class="stat"><i class="fas fa-comment"></i> 89</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-item">
+                        <img src="https://i.pinimg.com/564x/cb/44/73/cb4473fbf2a7140c7722955a05103ec9.jpg" alt="Tech Meetup">
+                    <div class="post-overlay">
+                        <div class="post-stats">
+                                <div class="stat"><i class="fas fa-heart"></i> 2.1k</div>
+                                <div class="stat"><i class="fas fa-comment"></i> 167</div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password-field');
+
+        togglePassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Toggle password visibility
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                passwordField.type = 'password';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+            
+            // Keep focus on password field
+            passwordField.focus();
+        });
+
+        // Clear password functionality
+        document.getElementById('clearPassword').addEventListener('click', function() {
+            passwordField.value = '';
+            passwordField.focus();
+        });
+
+        function checkPassword() {
+            const passwordField = document.getElementById('password-field');
+            const password = passwordField.value;
+            const container = document.querySelector('.password-container');
+            const errorMsg = document.querySelector('.password-error');
+            const successMsg = document.querySelector('.success-message');
+            const overlay = document.getElementById('password-overlay');
+            
+            // The correct password
+            const correctPassword = "Kesh%7728$3@)%$";
+            
+            if (password === correctPassword) {
+                // Hide error message if it was shown
+                errorMsg.style.display = 'none';
+                
+                // Show success message
+                successMsg.classList.add('show');
+                
+                // Fade out password container
+                container.classList.add('fade-out');
+                
+                // Wait for animations and redirect
+                setTimeout(() => {
+                    // Hide password overlay
+                    overlay.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    document.getElementById('skeleton-loader').style.display = 'block';
+                    document.querySelector('.brand-name').style.display = 'flex';
+                    
+                        // Show profile content
+                    setTimeout(() => {
+                        document.getElementById('skeleton-loader').style.display = 'none';
+                        document.querySelector('.profile-container').style.display = 'block';
+                        
+                        setTimeout(() => {
+                            document.querySelector('.profile-container').classList.add('loaded');
+                        }, 50);
+                    }, 2000);
+                }, 500);
+                }, 1500);
+            } else {
+                // Wrong password handling
+                errorMsg.style.display = 'block';
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 500);
+                passwordField.value = '';
+                passwordField.focus();
+            }
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event for access button
+            document.querySelector('.password-button').addEventListener('click', checkPassword);
+            
+            // Add enter key event for password field
+            document.getElementById('password-field').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                checkPassword();
+            }
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.profile-container').style.display = 'none';
+            document.querySelector('.brand-name').style.display = 'none';
+        });
+
+        // Matrix rain effect
+        function createMatrixRain() {
+            const container = document.getElementById('matrix-rain');
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for(let i = 0; i < columns; i++) {
+                let column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = i * 20 + 'px';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                
+                let y = -1000 * Math.random();
+                
+                function animate() {
+                    let text = '';
+                    let length = Math.floor(Math.random() * 25) + 15;
+                    
+                    for(let j = 0; j < length; j++) {
+                        text += characters[Math.floor(Math.random() * characters.length)] + '\n';
+                    }
+                    
+                    column.textContent = text;
+                    y += 20;
+                    
+                    if(y > window.innerHeight) {
+                        y = -1000;
+                    }
+                    
+                    column.style.transform = `translateY(${y}px)`;
+                    requestAnimationFrame(animate);
+                }
+                
+                container.appendChild(column);
+                animate();
+            }
+        }
+
+        // Initialize matrix rain
+        document.addEventListener('DOMContentLoaded', createMatrixRain);
+
+        // Close post page
+        document.querySelector('.close-post-btn').addEventListener('click', () => {
+            document.getElementById('post-page-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Navigation buttons
+        document.querySelector('.prev-btn').addEventListener('click', () => {
+            if (currentPostIndex > 0) {
+                openPost(currentPostIndex - 1);
+            }
+        });
+
+        document.querySelector('.next-btn').addEventListener('click', () => {
+            if (currentPostIndex < posts.length - 1) {
+                openPost(currentPostIndex + 1);
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('post-page-overlay').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Add enter key functionality for password
+        document.getElementById('password-field').addEventListener('keyup', function(event) {
+            // Check if Enter key is pressed (key code 13)
+            if (event.key === 'Enter') {
+                // Prevent default form submission
+                event.preventDefault();
+                // Call the checkPassword function
+                checkPassword();
+            }
+        });
+
+        // Add enter key functionality to simulate ACCESS button click
+        passwordField.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.querySelector('.password-button').click();
+            }
+        });
+
+        // Add this after your existing scripts
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and sections
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
